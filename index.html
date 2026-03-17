@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="pt-pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabuada Mágica - 1 a 12</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap");
+
+      body {
+        background-color: #f0f9ff;
+        font-family: "Quicksand", sans-serif;
+      }
+
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+
+        #page1 {
+          display: none !important;
+        }
+
+        body {
+          background: white;
+          padding: 0;
+        }
+
+        .a4-page {
+          box-shadow: none;
+          margin: 0;
+          width: 100%;
+          padding: 10mm;
+          border: none;
+        }
+
+        .answer-input {
+          border: 1px solid #ccc !important;
+        }
+
+        .print-only-inline {
+          display: inline-block !important;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+          border: none !important;
+          padding: 0 !important;
+          background: transparent !important;
+        }
+      }
+
+      .a4-page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 15mm;
+        margin: 20px auto;
+        background: white;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tabuada-card {
+        border: 2px solid #e0f2fe;
+        padding: 12px;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        background: #fff;
+      }
+
+      .tabuada-card:hover {
+        transform: translateY(-3px);
+        border-color: #7dd3fc;
+      }
+
+      .selected-card {
+        border-color: #3b82f6;
+        background-color: #eff6ff;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+      }
+
+      .answer-input {
+        width: 65px;
+        height: 35px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.1rem;
+        outline: none;
+      }
+
+      .header-input {
+        border-bottom: 2px dashed #cbd5e1;
+        padding: 2px 5px;
+        outline: none;
+        color: #1e293b;
+        font-weight: 600;
+      }
+
+      .correct {
+        border-color: #22c55e !important;
+        background-color: #f0fdf4;
+        color: #15803d;
+      }
+
+      .incorrect {
+        border-color: #ef4444 !important;
+        background-color: #fef2f2;
+        color: #b91c1c;
+      }
+
+      .btn-fancy {
+        transition: all 0.2s;
+        box-shadow: 0 4px 0 #2563eb;
+      }
+
+      .btn-fancy:active {
+        transform: translateY(3px);
+        box-shadow: 0 1px 0 #2563eb;
+      }
+    </style>
+  </head>
+
+  <body class="p-4">
+    <!-- Painel de Controlo -->
+    <div
+      class="no-print max-w-4xl mx-auto mb-8 bg-white p-6 rounded-3xl shadow-lg border-4 border-yellow-300"
+    >
+      <h1 class="text-3xl font-bold text-blue-600 mb-4 text-center">
+        🚀 Tabuada Mágica!
+      </h1>
+      <div class="flex flex-wrap gap-6 justify-center items-end">
+        <div class="text-center">
+          <label class="block text-sm font-bold text-gray-600 mb-1"
+            >Perguntas (máx 20):</label
+          >
+          <input
+            type="number"
+            id="numQuestions"
+            value="12"
+            min="1"
+            max="20"
+            class="block w-20 mx-auto rounded-xl border-2 border-blue-200 p-2 text-center font-bold focus:border-blue-500 outline-none"
+          />
+        </div>
+        <button
+          onclick="generateQuiz()"
+          class="btn-fancy bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-2xl"
+        >
+          Criar Questionário! ✨
+        </button>
+        <button
+          onclick="window.print()"
+          class="btn-fancy bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-2xl"
+        >
+          Imprimir Questionário 🖨️
+        </button>
+      </div>
+      <p class="text-sm text-center mt-4 text-gray-500 italic">
+        Dica: Seleciona as tabuadas abaixo clicando nelas!
+      </p>
+    </div>
+
+    <!-- PÁGINA 1: ESTUDO -->
+    <div class="a4-page" id="page1">
+      <div class="text-center mb-6">
+        <h2
+          class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600"
+        >
+          As Minhas Tabuadas
+        </h2>
+        <p class="text-gray-400 mt-2 text-lg italic text-center">
+          Escolhe as que queres praticar hoje!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" id="tabuadasContainer">
+        <!-- Gerado via JS (1 a 12) -->
+      </div>
+    </div>
+
+    <!-- PÁGINA 2: QUIZ -->
+    <div class="a4-page mt-10" id="page2">
+      <div
+        class="border-4 border-dashed border-blue-100 rounded-3xl p-6 h-full relative"
+      >
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-3xl font-bold text-blue-500">
+            Desafio de Matemática ✏️
+          </h2>
+          <div
+            id="scoreDisplay"
+            class="hidden bg-yellow-100 text-yellow-800 font-bold py-2 px-4 rounded-full border-2 border-yellow-300"
+          >
+            Pontuação: <span id="scoreVal">0</span>%
+          </div>
+        </div>
+
+        <!-- Cabeçalho de Identificação (Editável e Imprimível) -->
+        <div class="flex flex-wrap gap-8 mb-10 text-lg">
+          <div class="flex items-center flex-grow">
+            <span class="text-gray-500 mr-2 font-bold italic text-sm"
+              >Aluno:</span
+            >
+            <input
+              type="text"
+              placeholder="Escreve o teu nome aqui..."
+              class="header-input flex-grow bg-transparent focus:border-blue-400 transition-colors"
+            />
+          </div>
+          <div class="flex items-center w-48">
+            <span class="text-gray-500 mr-2 font-bold italic text-sm"
+              >Data:</span
+            >
+            <input
+              type="date"
+              class="header-input bg-transparent focus:border-blue-400 transition-colors"
+            />
+          </div>
+        </div>
+
+        <div id="quizContainer" class="grid grid-cols-2 gap-x-12 gap-y-6">
+          <div class="col-span-2 text-center py-20">
+            <p class="text-gray-300 text-xl italic">
+              Clica em "Criar Questionário" para gerar as tuas perguntas!
+            </p>
+          </div>
+        </div>
+
+        <div class="no-print mt-12 text-center space-x-4">
+          <button
+            id="validateBtn"
+            onclick="validateAnswers()"
+            class="hidden bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-10 rounded-2xl shadow-lg transform transition active:scale-95"
+          >
+            Validar Respostas ✅
+          </button>
+          <button
+            id="resetBtn"
+            onclick="generateQuiz()"
+            class="hidden bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-3 px-6 rounded-2xl"
+          >
+            Novo Quiz 🔄
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const selectedTables = new Set([2, 5, 10]);
+      let currentQuestions = [];
+
+      function init() {
+        const container = document.getElementById("tabuadasContainer");
+        for (let i = 1; i <= 12; i++) {
+          const card = document.createElement("div");
+          card.id = `card-${i}`;
+          card.className = `tabuada-card cursor-pointer ${selectedTables.has(i) ? "selected-card" : ""}`;
+          card.onclick = () => toggleTable(i);
+
+          const colors = [
+            "text-red-500",
+            "text-blue-500",
+            "text-green-500",
+            "text-purple-500",
+            "text-orange-500",
+            "text-pink-500",
+          ];
+          const headerColor = colors[i % colors.length];
+
+          let content = `<h3 class="font-bold text-center ${headerColor} mb-2 text-lg">Tabuada do ${i}</h3><div class="text-center text-xs space-y-0.5 font-semibold">`;
+          for (let j = 1; j <= 10; j++) {
+            content += `<p class="text-gray-500">${i} x ${j} = <span class="text-gray-800">${i * j}</span></p>`;
+          }
+          content += `</div>`;
+          card.innerHTML = content;
+          container.appendChild(card);
+        }
+      }
+
+      function toggleTable(n) {
+        const card = document.getElementById(`card-${n}`);
+        if (selectedTables.has(n)) {
+          selectedTables.delete(n);
+          card.classList.remove("selected-card");
+        } else {
+          selectedTables.add(n);
+          card.classList.add("selected-card");
+        }
+      }
+
+      function generateQuiz() {
+        let numPerguntas =
+          parseInt(document.getElementById("numQuestions").value) || 12;
+        if (numPerguntas > 20) numPerguntas = 20; // Garante o limite de 20
+
+        const container = document.getElementById("quizContainer");
+        const tablesArray = Array.from(selectedTables);
+
+        if (tablesArray.length === 0) {
+          alert("Ups! Escolhe pelo menos uma tabuada na primeira página!");
+          return;
+        }
+
+        // Gerar todas as combinações possíveis (ex: 2x1, 2x2... 2x10)
+        let allPossible = [];
+        tablesArray.forEach((n1) => {
+          for (let n2 = 1; n2 <= 10; n2++) {
+            allPossible.push({ n1, n2, ans: n1 * n2 });
+          }
+        });
+
+        // Baralhar (Fisher-Yates)
+        for (let i = allPossible.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [allPossible[i], allPossible[j]] = [allPossible[j], allPossible[i]];
+        }
+
+        // Selecionar o número pedido, garantindo que não há repetidas
+        // Se o utilizador pediu mais do que o total de combinações possíveis (raro com max 20)
+        const limit = Math.min(numPerguntas, allPossible.length);
+        currentQuestions = allPossible.slice(0, limit);
+
+        container.innerHTML = "";
+        document.getElementById("scoreDisplay").classList.add("hidden");
+        document.getElementById("validateBtn").classList.remove("hidden");
+        document.getElementById("resetBtn").classList.remove("hidden");
+
+        currentQuestions.forEach((q, i) => {
+          const questionDiv = document.createElement("div");
+          questionDiv.className =
+            "flex items-center space-x-3 bg-white p-2 rounded-xl";
+          questionDiv.innerHTML = `
+                    <span class="text-blue-400 font-bold w-6 text-sm">${i + 1}.</span>
+                    <span class="text-xl font-bold text-gray-700">${q.n1} × ${q.n2} = </span>
+                    <input type="number" class="answer-input no-print quiz-input" data-index="${i}" placeholder="?">
+                    <span class="hidden print-only-inline border-b-2 border-gray-300 w-16 h-8 ml-2"></span>
+                `;
+          container.appendChild(questionDiv);
+        });
+
+        document.getElementById("page2").scrollIntoView({ behavior: "smooth" });
+      }
+
+      function validateAnswers() {
+        const inputs = document.querySelectorAll(".quiz-input");
+        let correctCount = 0;
+
+        inputs.forEach((input, idx) => {
+          const val = parseInt(input.value);
+          if (val === currentQuestions[idx].ans) {
+            input.classList.add("correct");
+            input.classList.remove("incorrect");
+            correctCount++;
+          } else {
+            input.classList.add("incorrect");
+            input.classList.remove("correct");
+          }
+        });
+
+        const percent = Math.round(
+          (correctCount / currentQuestions.length) * 100,
+        );
+        const scoreDisplay = document.getElementById("scoreDisplay");
+        const scoreVal = document.getElementById("scoreVal");
+
+        scoreVal.innerText = percent;
+        scoreDisplay.classList.remove("hidden");
+
+        if (percent === 100) {
+          alert("🌟 Incrível! És um mestre da tabuada! 🌟");
+        } else if (percent >= 70) {
+          alert("Muito bem! Estás quase lá! 💪");
+        }
+      }
+
+      window.onload = init;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+Para utilizar o ficheiro que criámos no Windows e no iOS, não precisa de "instalação" no sentido tradicional, pois o HTML é lido nativamente por qualquer browser (Chrome, Safari, Edge).
+
+Aqui estão os passos mais simples para cada plataforma:
+
+### 1. Como obter o ficheiro
+
+Como estamos num ambiente de edição direta, a forma mais simples é:
+
+1. **Copiar o código:** Clique no ícone de copiar no canto superior do bloco de código (ou selecione tudo).
+2. **Guardar:** Abra um editor de texto simples (como o **Bloco de Notas** no Windows ou o **TextEdit** no Mac - em modo "Plain Text").
+3. **Colar e Nomear:** Cole o código e guarde o ficheiro com o nome `tabuada.html`. **Importante:** A extensão tem de ser `.html` e não `.txt`.
+
+---
+
+### 2. No Windows (Desktop)
+
+* **Abrir:** Basta dar um duplo clique no ficheiro `tabuada.html`. Ele abrirá no seu browser predefinido (Chrome, Edge ou Firefox).
+* **Dica:** Pode arrastar o ficheiro para a barra de favoritos do browser para ter acesso instantâneo sempre que precisar.
+
+---
+
+### 3. No Apple iOS (iPhone/iPad)
+
+A melhor forma de ter o ficheiro "instalado" como se fosse uma App é usar a funcionalidade **"Adicionar ao Ecrã Principal"**:
+
+1. **Transferir para o dispositivo:** Envie o ficheiro para si próprio por e-mail, via iCloud Drive ou use o AirDrop (se tiver um Mac).
+2. **Abrir no Safari:** Localize o ficheiro na app **Ficheiros** (Files) do iOS e toque nele. Ele abrirá no Safari.
+3. **Criar "App":**
+* Toque no ícone de **Partilha** (o quadrado com uma seta para cima na base do ecrã).
+* Desça no menu e selecione **"Adicionar ao Ecrã Principal"** (Add to Home Screen).
+* Dê um nome (ex: "Tabuada Mágica") e toque em "Adicionar".
+
+
+4. **Resultado:** Agora terá um ícone no seu ecrã inicial do iPhone/iPad. Ao tocar nele, o sistema abre diretamente sem as barras de navegação do browser, parecendo uma aplicação real.
+
+---
+
+### 4. Dica para Impressão
+
+* **Windows:** `Ctrl + P`. Certifique-se de que nas definições de impressão a opção "Gráficos de Fundo" (Background Graphics) está **desativada** para poupar tinta, conforme planeámos.
+* **iOS:** No menu de Partilha do Safari, escolha **"Imprimir"**. O sistema formatará automaticamente para A4.
+
+Como o sistema é auto-contido (não precisa de internet para funcionar após ser guardado), pode usá-lo mesmo em locais sem sinal!
