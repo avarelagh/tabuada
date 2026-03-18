@@ -296,7 +296,7 @@
       function generateQuiz() {
         let numPerguntas =
           parseInt(document.getElementById("numQuestions").value) || 12;
-        if (numPerguntas > 20) numPerguntas = 20; // Garante o limite de 20
+        if (numPerguntas > 30) numPerguntas = 30; // Garante o limite de 30
 
         const container = document.getElementById("quizContainer");
         const tablesArray = Array.from(selectedTables);
@@ -321,7 +321,7 @@
         }
 
         // Selecionar o número pedido, garantindo que não há repetidas
-        // Se o utilizador pediu mais do que o total de combinações possíveis (raro com max 20)
+        // Se o utilizador pediu mais do que o total de combinações possíveis (raro com max 30)
         const limit = Math.min(numPerguntas, allPossible.length);
         currentQuestions = allPossible.slice(0, limit);
 
